@@ -6,6 +6,8 @@ public class TankController : MonoBehaviour
 {
     [SerializeField] float _maxSpeed = .25f;
     [SerializeField] float _turnSpeed = 2f;
+    [SerializeField] Transform _projectilePoint;
+    [SerializeField] GameObject _projectile;
 
     Rigidbody _rb = null;
 
@@ -18,6 +20,10 @@ public class TankController : MonoBehaviour
     {
         MoveTank();
         TurnTank();
+        if (Input.GetKeyDown("space"))
+        {
+            TankFire();
+        }
     }
 
     public void MoveTank()
@@ -41,8 +47,8 @@ public class TankController : MonoBehaviour
         _rb.MoveRotation(_rb.rotation * turnOffset);
     }
 
-    public void MoveTurret()
+    public void TankFire()
     {
-
+        Instantiate(_projectile, _projectilePoint.transform.position, transform.rotation, _projectilePoint);
     }
 }
