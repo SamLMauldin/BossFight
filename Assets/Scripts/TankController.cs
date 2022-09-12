@@ -20,6 +20,10 @@ public class TankController : MonoBehaviour
     {
         MoveTank();
         TurnTank();
+    }
+
+    private void Update()
+    {
         if (Input.GetKeyDown("space"))
         {
             TankFire();

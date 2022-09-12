@@ -284,7 +284,7 @@ Transform:
   m_GameObject: {fileID: 5286841721627311402}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: -12}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5286841720863602159}
@@ -332,3 +332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50fdd73e1938b7f4dbc07e2237e2cee0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TravelSpeed: 0.25
+  RB: {fileID: 5286841721627311401}
+  _collectParticles: {fileID: 4674282546640761703, guid: 28da83cc7c4e54a4ab896d14267132e5, type: 3}
+  _collectSound: {fileID: 0}
