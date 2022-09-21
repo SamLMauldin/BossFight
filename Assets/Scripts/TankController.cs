@@ -8,6 +8,7 @@ public class TankController : MonoBehaviour
     [SerializeField] float _turnSpeed = 2f;
     [SerializeField] Transform _projectilePoint;
     [SerializeField] GameObject _projectile;
+    [SerializeField] AudioClip _fireSound;
 
     Rigidbody _rb = null;
 
@@ -54,5 +55,15 @@ public class TankController : MonoBehaviour
     public void TankFire()
     {
         Instantiate(_projectile, _projectilePoint.transform.position, transform.rotation, _projectilePoint);
+        Feedback();
+    }
+
+    private void Feedback()
+    {
+        //audio. TODO - consider Object Pooling for performance
+        if (_fireSound != null)
+        {
+            AudioHelper.PlayClip2D(_fireSound, 1f);
+        }
     }
 }

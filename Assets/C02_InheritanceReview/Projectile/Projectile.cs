@@ -13,7 +13,7 @@ namespace Inheritance
         [SerializeField] protected Rigidbody RB;
 
         [SerializeField] ParticleSystem _collectParticles;
-        [SerializeField] AudioClip _collectSound;
+        [SerializeField] AudioClip _hitSound;
 
         private void OnCollisionEnter(Collision collision)
         {
@@ -41,9 +41,9 @@ namespace Inheritance
                 _collectParticles = Instantiate(_collectParticles, transform.position, Quaternion.identity);
             }
             //audio. TODO - consider Object Pooling for performance
-            if (_collectSound != null)
+            if (_hitSound != null)
             {
-                AudioHelper.PlayClip2D(_collectSound, 1f);
+                AudioHelper.PlayClip2D(_hitSound, 1f);
             }
         }
     }

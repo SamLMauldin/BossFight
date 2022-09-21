@@ -335,4 +335,4 @@ MonoBehaviour:
   TravelSpeed: 0.25
   RB: {fileID: 5286841721627311401}
   _collectParticles: {fileID: 4674282546640761703, guid: 28da83cc7c4e54a4ab896d14267132e5, type: 3}
-  _collectSound: {fileID: 0}
+  _fireSound: {fileID: 8300000, guid: 48e6565302f8b724a909b839c842cee3, type: 3}

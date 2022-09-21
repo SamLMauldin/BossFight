@@ -8,6 +8,11 @@ namespace Inheritance
     {
         protected override void Impact(Collision collision)
         {
+            Health damageableOject = collision.gameObject.GetComponent<Health>();
+            if(damageableOject != null)
+            {
+                damageableOject.TakeDamage(50);
+            }
             this.gameObject.SetActive(false);
         }
     }
