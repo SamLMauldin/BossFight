@@ -12,7 +12,16 @@ public class Health : MonoBehaviour, IDamageable
     [SerializeField] AudioClip _damagedSound;
     [SerializeField] ParticleSystem _killParticles;
     [SerializeField] AudioClip _killSound;
+    [SerializeField] HealthBar _healthBar;
 
+    void Start()
+    {
+        _currentHealth = _maxHealth;
+        if(_healthBar != null)
+        {
+            _healthBar.SetMaxHealth(_maxHealth);
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -34,6 +43,10 @@ public class Health : MonoBehaviour, IDamageable
             GetComponentInChildren<Renderer>().material = _damagedMaterial;
         }
         _currentHealth -= damage;
+        if (_healthBar != null)
+        {
+            _healthBar.SetHealth(_currentHealth);
+        }
         Feedback();
         StartCoroutine(Timer());
     }
