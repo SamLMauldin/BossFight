@@ -17,7 +17,7 @@ namespace Inheritance
 
         private void OnCollisionEnter(Collision collision)
         {
-            Debug.Log("Projectile collision!");
+            //Debug.Log("Projectile collision!");
             Impact(collision);
             Feedback();
         }

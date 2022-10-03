@@ -9,12 +9,16 @@ public class TankController : MonoBehaviour
     [SerializeField] Transform _projectilePoint;
     [SerializeField] GameObject _projectile;
     [SerializeField] AudioClip _fireSound;
+    [SerializeField] float _jumpForce = 10f;
+    [SerializeField] GameObject _ground;
+    float _offset;
 
     Rigidbody _rb = null;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _offset = (transform.position.y - _ground.transform.position.y)+1f;
     }
 
     private void FixedUpdate()
@@ -29,6 +33,7 @@ public class TankController : MonoBehaviour
         {
             TankFire();
         }
+        Jump();
     }
 
     public void MoveTank()
@@ -64,6 +69,17 @@ public class TankController : MonoBehaviour
         if (_fireSound != null)
         {
             AudioHelper.PlayClip2D(_fireSound, 1f);
+        }
+    }
+
+    private void Jump()
+    {
+        if (transform.position.y - _ground.transform.position.y < _offset)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                _rb.AddForce(Vector3.up * _jumpForce);
+            }
         }
     }
 }

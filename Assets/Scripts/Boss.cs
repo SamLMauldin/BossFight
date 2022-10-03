@@ -72,6 +72,11 @@ public class Boss : MonoBehaviour
         Feedback();
     }
 
+    private void BossAttack2()
+    {
+        //Boss Attacks go here
+    }
+
     private void Movement1()
     {
         if (_atSpawn == false)
@@ -107,6 +112,15 @@ public class Boss : MonoBehaviour
         if (_fireSound != null)
         {
             AudioHelper.PlayClip2D(_fireSound, 1f);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Health damageableOject = collision.gameObject.GetComponent<Health>();
+        if (damageableOject != null)
+        {
+            damageableOject.TakeDamage(50);
         }
     }
 }
