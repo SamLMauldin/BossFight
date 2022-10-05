@@ -7,12 +7,16 @@ public class Boss : MonoBehaviour
     public float speed = 5;
 
     [SerializeField] Transform _projectilePoint;
+    [SerializeField] Transform _projectilePoint2;
     [SerializeField] GameObject _projectile;
     [SerializeField] AudioClip _fireSound;
     [SerializeField] Transform _spinningPosistion;
     [SerializeField] Transform _pingPongPosistion;
+    [SerializeField] Transform _attack2Posistion;
+    [SerializeField] GameObject[] _secondAttacks;
     private bool _atSpawn = false;
     private bool _atFirstBase = false;
+    private bool _atSecondAttack = false;
     private bool _canFire = true;
     public bool _currentMovement = false;
     Rigidbody _rb;
@@ -28,20 +32,21 @@ public class Boss : MonoBehaviour
     {
         if (_currentMovement)
         {
-            Movement1();
+            //Movement1();
         }
         else
         {
-            Movement2();
+            //Movement2();
         }
         StartCoroutine(MoveTimer());
     }
 
     private void FixedUpdate()
     {
+        BossAttack2();
         if (_canFire)
         {
-            BossBasicAttack();
+            //BossBasicAttack();
             _canFire = false;
             StartCoroutine(Timer());
         }
@@ -74,7 +79,23 @@ public class Boss : MonoBehaviour
 
     private void BossAttack2()
     {
-        //Boss Attacks go here
+        if (_atSecondAttack == false)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _attack2Posistion.position, speed * Time.deltaTime);
+            if(Vector3.Distance(transform.position, _attack2Posistion.position) <= 1f)
+            {
+                _atSecondAttack = true;
+            }
+        }
+        else
+        {
+            for(int i = 0; i < _secondAttacks.Length; i++)
+            {
+                Instantiate(_secondAttacks[i], _projectilePoint2.transform.position, transform.rotation, _projectilePoint2);
+            }
+        }
+
+
     }
 
     private void Movement1()
