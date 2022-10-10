@@ -19,8 +19,11 @@ public class Boss : MonoBehaviour
     private bool _atSecondAttack = false;
     private bool _canFire = true;
     public bool _currentMovement = false;
+    public bool _currentAttack = false;
     Rigidbody _rb;
     public Quaternion originalRotationValue;
+
+    private int _secondAttackIndex = 0;
 
     private void Awake()
     {
@@ -30,26 +33,27 @@ public class Boss : MonoBehaviour
     }
     private void Update()
     {
+        //Attack2Movement();
         if (_currentMovement)
         {
-            //Movement1();
+            Movement1();
         }
         else
         {
-            //Movement2();
+            Movement2();
         }
-        StartCoroutine(MoveTimer());
     }
 
     private void FixedUpdate()
     {
-        BossAttack2();
         if (_canFire)
         {
-            //BossBasicAttack();
+            BossBasicAttack();
+            //BossAttack2();
             _canFire = false;
             StartCoroutine(Timer());
         }
+        StartCoroutine(MoveTimer());
     }
     IEnumerator Timer()
     {
@@ -79,23 +83,16 @@ public class Boss : MonoBehaviour
 
     private void BossAttack2()
     {
-        if (_atSecondAttack == false)
+        if (_atSecondAttack)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _attack2Posistion.position, speed * Time.deltaTime);
-            if(Vector3.Distance(transform.position, _attack2Posistion.position) <= 1f)
+            Instantiate(_secondAttacks[_secondAttackIndex], _projectilePoint2.transform.position, transform.rotation, _projectilePoint2);
+            //Feedback2();
+            _secondAttackIndex++;
+            if(_secondAttackIndex >= _secondAttacks.Length)
             {
-                _atSecondAttack = true;
+                _secondAttackIndex = 0;
             }
         }
-        else
-        {
-            for(int i = 0; i < _secondAttacks.Length; i++)
-            {
-                Instantiate(_secondAttacks[i], _projectilePoint2.transform.position, transform.rotation, _projectilePoint2);
-            }
-        }
-
-
     }
 
     private void Movement1()
@@ -127,9 +124,21 @@ public class Boss : MonoBehaviour
             _rb.MoveRotation(_rb.rotation * turnOffset);
         }
     }
+
+    private void Attack2Movement()
+    {
+        if (_atSecondAttack == false)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _attack2Posistion.position, speed * Time.deltaTime);
+            if (Vector3.Distance(transform.position, _attack2Posistion.position) <= 1f)
+            {
+                _atSecondAttack = true;
+            }
+        }
+    }
+
     private void Feedback()
     {
-        //audio. TODO - consider Object Pooling for performance
         if (_fireSound != null)
         {
             AudioHelper.PlayClip2D(_fireSound, 1f);
@@ -143,6 +152,11 @@ public class Boss : MonoBehaviour
         {
             damageableOject.TakeDamage(50);
         }
+    }
+
+    private void SwitchingMovement()
+    {
+
     }
 }
 
