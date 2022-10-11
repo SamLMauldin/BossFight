@@ -10,6 +10,7 @@ public class Boss : MonoBehaviour
     [SerializeField] Transform _projectilePoint2;
     [SerializeField] GameObject _projectile;
     [SerializeField] AudioClip _fireSound;
+    [SerializeField] AudioClip _fireSound2;
     [SerializeField] Transform _spinningPosistion;
     [SerializeField] Transform _pingPongPosistion;
     [SerializeField] Transform _attack2Posistion;
@@ -19,7 +20,8 @@ public class Boss : MonoBehaviour
     private bool _atSecondAttack = false;
     private bool _canFire = true;
     public bool _currentMovement = false;
-    public bool _currentAttack = false;
+    public bool _currentAttack;
+    private Health _bossCurrentHealth;
     Rigidbody _rb;
     public Quaternion originalRotationValue;
 
@@ -28,19 +30,21 @@ public class Boss : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        originalRotationValue = transform.rotation; 
-        
+        originalRotationValue = transform.rotation;
+        _bossCurrentHealth = this.GetComponent<Health>();
+        _currentAttack = true;
     }
     private void Update()
     {
+        SwitchingMovement();
         //Attack2Movement();
-        if (_currentMovement)
+        //if (_currentMovement)
         {
-            Movement1();
+            //Movement1();
         }
-        else
+        //else
         {
-            Movement2();
+            //Movement2();
         }
     }
 
@@ -48,16 +52,22 @@ public class Boss : MonoBehaviour
     {
         if (_canFire)
         {
-            BossBasicAttack();
-            //BossAttack2();
+            if (_currentAttack == true)
+            {
+                BossBasicAttack();
+            }
+            else
+            {
+                BossAttack2();
+            }
             _canFire = false;
             StartCoroutine(Timer());
         }
-        StartCoroutine(MoveTimer());
+        //StartCoroutine(MoveTimer());
     }
     IEnumerator Timer()
     {
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(1f);
         _canFire = true;
     }
     IEnumerator MoveTimer()
@@ -86,7 +96,7 @@ public class Boss : MonoBehaviour
         if (_atSecondAttack)
         {
             Instantiate(_secondAttacks[_secondAttackIndex], _projectilePoint2.transform.position, transform.rotation, _projectilePoint2);
-            //Feedback2();
+            Feedback2();
             _secondAttackIndex++;
             if(_secondAttackIndex >= _secondAttacks.Length)
             {
@@ -97,6 +107,11 @@ public class Boss : MonoBehaviour
 
     private void Movement1()
     {
+        if (_atSpawn)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, originalRotationValue, Time.time * speed);
+            _atSpawn = false;
+        }
         if (_atSpawn == false)
         {
             transform.position = Vector3.MoveTowards(transform.position, _pingPongPosistion.position, speed * Time.deltaTime);
@@ -145,6 +160,14 @@ public class Boss : MonoBehaviour
         }
     }
 
+    private void Feedback2()
+    {
+        if (_fireSound != null)
+        {
+            AudioHelper.PlayClip2D(_fireSound2, 1f);
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         Health damageableOject = collision.gameObject.GetComponent<Health>();
@@ -156,7 +179,23 @@ public class Boss : MonoBehaviour
 
     private void SwitchingMovement()
     {
-
+        if(_bossCurrentHealth._currentHealth >= _bossCurrentHealth._maxHealth-150f)
+        {
+            Movement1();
+        }
+        else if (_bossCurrentHealth._currentHealth >= _bossCurrentHealth._maxHealth-450f)
+        {
+            Movement2();
+        }
+        else if (_bossCurrentHealth._currentHealth >= _bossCurrentHealth._maxHealth-600f)
+        {
+            Movement1();
+        }
+        else if(_bossCurrentHealth._currentHealth >= (_bossCurrentHealth._maxHealth -1000f))
+        {
+            _currentAttack = false;
+            Attack2Movement();
+        }
     }
 }
 

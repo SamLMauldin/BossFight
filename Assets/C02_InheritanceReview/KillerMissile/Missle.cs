@@ -13,7 +13,10 @@ namespace Inheritance
             {
                 damageableOject.TakeDamage(50);
             }
-            this.gameObject.SetActive(false);
+            if (collision.gameObject.tag != "Missle")
+            {
+                this.gameObject.SetActive(false);
+            }
         }
     }
 }

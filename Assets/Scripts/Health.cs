@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Health : MonoBehaviour, IDamageable
 {
-    [SerializeField] int _maxHealth = 100;
-    [SerializeField] int _currentHealth = 100;
+    [SerializeField] public int _maxHealth = 100;
+    [SerializeField] public int _currentHealth = 100;
     [SerializeField] Material _damagedMaterial;
     [SerializeField] Material _originalMaterial;
     [SerializeField] ParticleSystem _damagedParticles;
