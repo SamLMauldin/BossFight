@@ -13,6 +13,14 @@ public class Health : MonoBehaviour, IDamageable
     [SerializeField] ParticleSystem _killParticles;
     [SerializeField] AudioClip _killSound;
     [SerializeField] HealthBar _healthBar;
+    [SerializeField] GameObject _damagedPanel = null;
+
+
+    [SerializeField] Camera _gameCamera = null;
+    [SerializeField] Vector3 _originalPosOfCam;
+    [SerializeField] float _shakeFrequncy = 5;
+    private  bool _damageTaken = false;
+
 
     void Start()
     {
@@ -20,6 +28,14 @@ public class Health : MonoBehaviour, IDamageable
         if(_healthBar != null)
         {
             _healthBar.SetMaxHealth(_maxHealth);
+        }
+        if(_damagedPanel != null)
+        {
+            _damagedPanel.SetActive(false);
+        }
+        if(_gameCamera != null)
+        {
+            _originalPosOfCam = _gameCamera.transform.position;
         }
     }
     // Update is called once per frame
@@ -29,6 +45,15 @@ public class Health : MonoBehaviour, IDamageable
         {
             Kill();
         }
+         if(_gameCamera != null && _damageTaken)
+        {
+            _gameCamera.transform.position = _originalPosOfCam + Random.insideUnitSphere * _shakeFrequncy;
+            if (_gameCamera != null)
+            {
+                StartCoroutine(CameraShake());
+            }
+        }
+
     }
     public void Kill()
     {
@@ -47,6 +72,11 @@ public class Health : MonoBehaviour, IDamageable
         {
             _healthBar.SetHealth(_currentHealth);
         }
+        if(_damagedPanel != null)
+        {
+            StartCoroutine(DamagePanel());
+        }
+        _damageTaken = true;
         Feedback();
         StartCoroutine(Timer());
     }
@@ -83,5 +113,19 @@ public class Health : MonoBehaviour, IDamageable
         {
             AudioHelper.PlayClip2D(_killSound, 1f);
         }
+    }
+
+    IEnumerator DamagePanel()
+    {
+        _damagedPanel.SetActive(true);
+        yield return new WaitForSeconds(1);
+        _damagedPanel.SetActive(false);
+    }
+
+    IEnumerator CameraShake()
+    {
+        yield return new WaitForSeconds(1);
+        _gameCamera.transform.position = _originalPosOfCam;
+        _damageTaken = false;
     }
 }

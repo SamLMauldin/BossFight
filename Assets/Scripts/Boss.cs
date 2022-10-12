@@ -15,6 +15,7 @@ public class Boss : MonoBehaviour
     [SerializeField] Transform _pingPongPosistion;
     [SerializeField] Transform _attack2Posistion;
     [SerializeField] GameObject[] _secondAttacks;
+    [SerializeField] ParticleSystem _damagedParticles;
     private bool _atSpawn = false;
     private bool _atFirstBase = false;
     private bool _atSecondAttack = false;
@@ -26,6 +27,7 @@ public class Boss : MonoBehaviour
     public Quaternion originalRotationValue;
 
     private int _secondAttackIndex = 0;
+    private float _attackSpeed = 1f;
 
     private void Awake()
     {
@@ -37,15 +39,6 @@ public class Boss : MonoBehaviour
     private void Update()
     {
         SwitchingMovement();
-        //Attack2Movement();
-        //if (_currentMovement)
-        {
-            //Movement1();
-        }
-        //else
-        {
-            //Movement2();
-        }
     }
 
     private void FixedUpdate()
@@ -63,28 +56,13 @@ public class Boss : MonoBehaviour
             _canFire = false;
             StartCoroutine(Timer());
         }
-        //StartCoroutine(MoveTimer());
     }
     IEnumerator Timer()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(_attackSpeed);
         _canFire = true;
     }
-    IEnumerator MoveTimer()
-    {
-        yield return new WaitForSeconds(20);
-        if (_atSpawn)
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation, originalRotationValue, Time.time * speed);
-            _atSpawn = false;
-        }
-        if (_atFirstBase)
-        {
-            _atFirstBase = false;
-        }
-        _currentMovement = !_currentMovement;
-    }
-
+    
     private void BossBasicAttack()
     {
         Instantiate(_projectile, _projectilePoint.transform.position, transform.rotation, _projectilePoint);
@@ -181,20 +159,47 @@ public class Boss : MonoBehaviour
     {
         if(_bossCurrentHealth._currentHealth >= _bossCurrentHealth._maxHealth-150f)
         {
+            _attackSpeed = 0.75f;
             Movement1();
         }
         else if (_bossCurrentHealth._currentHealth >= _bossCurrentHealth._maxHealth-450f)
         {
-            Movement2();
+            _currentAttack = false;
+            _attackSpeed = 1.5f;
+            Attack2Movement();
         }
         else if (_bossCurrentHealth._currentHealth >= _bossCurrentHealth._maxHealth-600f)
         {
+            _currentAttack = true;
+            _attackSpeed = 0.75f;
+            FeedbackParticles();
             Movement1();
+        }
+        else if(_bossCurrentHealth._currentHealth >= _bossCurrentHealth._maxHealth - 850f)
+        {
+            _attackSpeed = 0.5f;
+            Movement2();
         }
         else if(_bossCurrentHealth._currentHealth >= (_bossCurrentHealth._maxHealth -1000f))
         {
             _currentAttack = false;
+            _attackSpeed = 1.5f;
             Attack2Movement();
+        }
+        else if (_bossCurrentHealth._currentHealth >= (_bossCurrentHealth._maxHealth - 1250f))
+        {
+            _currentAttack = true;
+            _attackSpeed = 0.5f;
+            Movement2();
+        }
+    }
+
+    private void FeedbackParticles()
+    {
+        //particles 
+        if (_damagedParticles != null)
+        {
+            _damagedParticles = Instantiate(_damagedParticles, transform.position, Quaternion.identity);
         }
     }
 }

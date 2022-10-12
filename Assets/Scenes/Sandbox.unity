@@ -653,6 +653,82 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 623972910}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &627513275
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 627513276}
+  - component: {fileID: 627513278}
+  - component: {fileID: 627513277}
+  m_Layer: 5
+  m_Name: DamagedPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &627513276
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627513275}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1763269899}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &627513277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627513275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.392}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &627513278
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627513275}
+  m_CullTransparentMesh: 1
 --- !u!1 &690073699
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,8 +870,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e6b44d163d6a3245b614acf78bd8cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 200
-  _currentHealth: 200
+  _maxHealth: 300
+  _currentHealth: 300
   _damagedMaterial: {fileID: 2100000, guid: fa3738a04a5ce854a81e33ab07fbe763, type: 2}
   _originalMaterial: {fileID: 2100000, guid: b1310ba89d583b1449ae1c0bf6e5b4f0, type: 2}
   _damagedParticles: {fileID: 3435179416320165557, guid: fb84e484e15bb6d41a6ae7dbe37105ba, type: 3}
@@ -803,6 +879,10 @@ MonoBehaviour:
   _killParticles: {fileID: 3954750989545344481, guid: ffd6d8f84b563364aaf6e2bfefba3802, type: 3}
   _killSound: {fileID: 8300000, guid: 0d8c1a23dd526a24aaf70b2cfb263f21, type: 3}
   _healthBar: {fileID: 732590199}
+  _damagedPanel: {fileID: 627513275}
+  _gameCamera: {fileID: 139571742}
+  _originalPosOfCam: {x: 0, y: 0, z: 0}
+  _shakeFrequncy: 2
 --- !u!114 &732590199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2360,6 +2440,7 @@ MonoBehaviour:
   - {fileID: 7600206926247155454, guid: e89971243df37da43ab40f693c35941a, type: 3}
   - {fileID: 8925047754272326132, guid: d802534f3c855a946bd8d98723920a01, type: 3}
   - {fileID: 5794883490670380896, guid: 4e17a955b00e2af4e86537cf15ac81d2, type: 3}
+  _damagedParticles: {fileID: 3245470341791232, guid: 364e8093e4e85044daee0548fb1ab42a, type: 3}
   _currentMovement: 0
   _currentAttack: 0
   originalRotationValue: {x: 0, y: 0, z: 0, w: 0}
@@ -2384,6 +2465,10 @@ MonoBehaviour:
   _killParticles: {fileID: 3954750989545344481, guid: ffd6d8f84b563364aaf6e2bfefba3802, type: 3}
   _killSound: {fileID: 8300000, guid: 9d388a67ecfaaf34e9d1f86872ef847d, type: 3}
   _healthBar: {fileID: 1663128477}
+  _damagedPanel: {fileID: 0}
+  _gameCamera: {fileID: 0}
+  _originalPosOfCam: {x: 0, y: 0, z: 0}
+  _shakeFrequncy: 5
 --- !u!114 &1663128477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2711,6 +2796,7 @@ RectTransform:
   m_Children:
   - {fileID: 1055106317}
   - {fileID: 48206425}
+  - {fileID: 627513276}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
